@@ -1,0 +1,29 @@
+{
+   "name": "WalletAPIService",
+   "version": "1.0.0",
+   "main": "index.js",
+   "repository": "https://github.com/adeoluwa-adebiyi/WalletAPIService",
+   "author": "adeoluwa-adebiyi <adeoluwaadebiyi@gmail.com>",
+   "license": "MIT",
+   "dependencies": {
+      "dotenv": "^8.2.0",
+      "mysql": "^2.14.1",
+      "pg": "^8.5.1",
+      "reflect-metadata": "^0.1.10",
+      "typeorm": "0.2.31"
+   },
+   "devDependencies": {
+      "@types/node": "^8.0.29",
+      "ts-node": "3.3.0",
+      "typescript": "3.3.3333"
+   },
+   "scripts": {
+      "start": "ts-node src/index.ts",
+      "run-migrations": "typeorm --config ormconfig.ts migrations:run",
+      "watch": "yarn typeorm:local migration:run; nodemon --watch \"src/**\" --ext \"ts,json\" --ignore \"src/**/*.spec.ts\" --exec \"ts-node src/index.ts\"",
+      "typeorm:local": "yarn local ./node_modules/typeorm/cli.js",
+      "local": "DOTENV_CONFIG_PATH=./.env.local TS_NODE_PROJECT=tsconfig.json TS_NODE_TRANSPILE_ONLY=true ts-node -r dotenv/config",
+      "g:migration": "yarn typeorm:local migration:generate -n",
+      "g:entity": "yarn typeorm:local entity:create -n"
+   }
+}
