@@ -1,0 +1,1 @@
+export const USER_DOES_NOT_EXIST_ERROR="User does not exist";

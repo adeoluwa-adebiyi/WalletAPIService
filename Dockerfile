@@ -6,7 +6,9 @@ WORKDIR /app/src
 
 RUN npm install -g typescript tsc ts-node nodemon
 
-RUN yarn install
+RUN npm install
+
+EXPOSE 8000
 
 CMD ["yarn", "watch"]
 

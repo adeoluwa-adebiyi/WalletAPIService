@@ -1,0 +1,66 @@
+version: "3.3"
+
+services:
+
+  wallet_api_db:
+    image: postgres:12-alpine
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - PGDATA=/var/lib/postgresql/data/pgdata
+    networks: 
+      - wallet_vpc
+
+    ports: 
+        - 5432:5432
+
+
+#   wallet_api_db:
+#     image: mongo
+#     restart: always
+#     environment:
+#       MONGO_INITDB_ROOT_USERNAME: root
+#       MONGO_INITDB_ROOT_PASSWORD: example
+#     restart: always
+#     ports: 
+#         - 27017:27107
+
+  app_event_bus:
+    image: bitnami/redis:latest
+    environment:
+      - REDIS_PASSWORD=admin1234
+
+  wallet_api_service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+    environment: 
+        - DB_HOST=wallet_api_db
+        - DB_PASSWORD=postgres
+        - DB_TYPE=postgres
+        - DB_NAME=postgres
+        - DB_USER=postgres
+        - DB_PORT=5432
+        - PORT=4000
+
+    ports: 
+      - 8000:4000
+
+    depends_on:
+      - wallet_api_db
+      - app_event_bus
+    restart: always
+
+    volumes:
+      - ./:/app
+      - /app/node_modules/bcrypt/
+
+
+    networks: 
+      - wallet_vpc
+
+networks:
+    wallet_vpc:
+        external: true

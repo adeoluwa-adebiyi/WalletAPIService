@@ -6,24 +6,40 @@
    "author": "adeoluwa-adebiyi <adeoluwaadebiyi@gmail.com>",
    "license": "MIT",
    "dependencies": {
+      "@types/bcrypt": "^3.0.1",
+      "@types/express": "^4.17.11",
+      "@types/helmet": "^4.0.0",
+      "@types/jsonwebtoken": "^8.5.1",
+      "@types/mongoose": "^5.10.5",
+      "@types/morgan": "^1.9.2",
+      "bcrypt": "^5.0.1",
       "dotenv": "^8.2.0",
+      "express": "^4.17.1",
+      "helmet": "^4.5.0",
+      "inversify": "^5.1.1",
+      "jsonwebtoken": "^8.5.1",
+      "mongoose": "^5.12.5",
+      "morgan": "^1.10.0",
       "mysql": "^2.14.1",
       "pg": "^8.5.1",
-      "reflect-metadata": "^0.1.10",
+      "reflect-metadata": "^0.1.13",
       "typeorm": "0.2.31"
    },
    "devDependencies": {
       "@types/node": "^8.0.29",
+      "chai": "^4.3.4",
+      "mocha": "^8.3.2",
       "ts-node": "3.3.0",
       "typescript": "3.3.3333"
    },
    "scripts": {
-      "start": "ts-node src/index.ts",
+      "start": "ts-node -r dotenv/config ./node_modules/typeorm/cli.js migrations:run;ts-node -r dotenv/config src/index.ts",
       "run-migrations": "typeorm --config ormconfig.ts migrations:run",
-      "watch": "yarn typeorm:local migration:run; nodemon --watch \"src/**\" --ext \"ts,json\" --ignore \"src/**/*.spec.ts\" --exec \"ts-node src/index.ts\"",
-      "typeorm:local": "yarn local ./node_modules/typeorm/cli.js",
+      "watch": "ts-node -r dotenv/config ./node_modules/typeorm/cli.js migrations:run; nodemon --watch \"src/**\" --ext \"ts,json\" --ignore \"src/**/*.spec.ts\" --exec \"ts-node src/index.ts\"",
+      "typeorm:local": "ts-node -r dotenv/config ./node_modules/typeorm/cli.js",
       "local": "DOTENV_CONFIG_PATH=./.env.local TS_NODE_PROJECT=tsconfig.json TS_NODE_TRANSPILE_ONLY=true ts-node -r dotenv/config",
       "g:migration": "yarn typeorm:local migration:generate -n",
-      "g:entity": "yarn typeorm:local entity:create -n"
+      "g:entity": "yarn typeorm:local entity:create -n",
+      "test": "mocha -r ts-node/register src/tests/**.spec.ts --no-timeout"
    }
 }
