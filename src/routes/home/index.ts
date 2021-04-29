@@ -3,8 +3,8 @@ import HomeController from "../../controllers/home";
 
 const router = express.Router();
 
-router.get("/login", HomeController.login);
+router.post("/login", HomeController.login);
 
-router.get("/register", HomeController.register);
+router.post("/register", HomeController.register);
 
 export default router;

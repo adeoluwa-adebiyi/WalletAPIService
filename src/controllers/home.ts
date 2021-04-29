@@ -7,7 +7,7 @@ const login = async(req: Request, res: Response, next: Function) => {
         const response = await AuthService.login(email, password);
         res.send({...response});
     }catch(e){
-        res.status(500).send({
+        res.status(401).send({
             status: "failure",
             message: e.message
         });
