@@ -10,6 +10,7 @@ export default{
     DB_PASSWORD: null,
     DB_NAME: null,
     DB_PORT: null,
+    DB_URL: null,
     PORT:null,
     ...process.env
 }

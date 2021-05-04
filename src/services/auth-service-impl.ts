@@ -1,11 +1,12 @@
 import { AuthService, LoginResponse } from "./interfaces/auth-service";
-import { User } from "../entity/User";
+import { User } from "../db/models/user";
 import { UserRepository } from "../repos/interfaces/user-repo";
 import { UserRepositoryImpl } from "../repos/user-repo-impl";
 import { TokenService } from "./interfaces/token-service";
 import { JwtTokenServiceImpl } from "./jwt-token-service-impl";
 import { DataHashService } from "./interfaces/data-hash-service";
 import { PasswordHashServiceImpl } from "./password-hash-service-impl";
+
 
 export class AuthServiceImpl implements AuthService{
 

@@ -3,11 +3,22 @@ import {BaseEntity, Column, Entity, ManyToOne, OneToMany, OneToOne, PrimaryGener
 import { Currency } from "./Currency";
 import { User } from "./User";
 
+export interface WalletOptions{
+    id?: number;
+
+    owner: User;
+
+    balance?: number;
+    
+    currency: Currency;
+
+}
+
 @Entity()
 export class Wallet extends BaseEntity {
 
     @PrimaryGeneratedColumn()
-    id: number;
+    id?: number;
 
     @ManyToOne( type => User, user => user.wallets)
     owner: User;
@@ -17,7 +28,7 @@ export class Wallet extends BaseEntity {
         default: 0.0,
         nullable: false
     })
-    balance: number;
+    balance?: number;
 
     @ManyToOne(type => Currency)
     currency: Currency;

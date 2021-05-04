@@ -1,4 +1,4 @@
-import { User } from "../../entity/User";
+import { User } from "../../db/models/user";
 
 export interface LoginResponse{
    authToken: string;
@@ -9,7 +9,7 @@ export interface LoginResponse{
 }
 
 export interface UserTokenCredentials{
-    sub: Number;
+    sub: string;
     roles: Array<string>;
     exp: number;
 }

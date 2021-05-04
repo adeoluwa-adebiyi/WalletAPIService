@@ -1,7 +1,7 @@
 import { before, describe, it, beforeEach } from "mocha";
 import { expect } from "chai";
 import config from "../config";
-import { User } from "../entity/User";
+import { User } from "../db/models/User";
 import { AuthServiceImpl } from "../services/auth-service-impl";
 import { AuthService, LoginResponse, UserTokenCredentials } from "../services/interfaces/auth-service";
 import { verify } from "jsonwebtoken";
@@ -12,10 +12,11 @@ import { TokenService } from "../services/interfaces/token-service";
 import { JwtTokenServiceImpl } from "../services/jwt-token-service-impl";
 import { DataHashService } from "../services/interfaces/data-hash-service";
 import { PasswordHashServiceImpl } from "../services/password-hash-service-impl";
+import { UserRepositoryImpl } from "../repos/user-repo-impl";
 
 
 let authService: AuthService;
-let userRepo: Repository<User>;
+let userRepo: UserRepository;
 let tokenService: TokenService = new JwtTokenServiceImpl();
 let passwordHashService: DataHashService = new PasswordHashServiceImpl();
 
@@ -24,7 +25,7 @@ describe("Tests AuthService for functionality", () => {
     before((done) => {
         connect().then(() => {
             authService = new AuthServiceImpl();
-            userRepo = getRepository(User);
+            userRepo = new UserRepositoryImpl();
             done();
         });
     });

@@ -14,6 +14,7 @@
       "@types/jsonwebtoken": "^8.5.1",
       "@types/mongoose": "^5.10.5",
       "@types/morgan": "^1.9.2",
+      "@types/uuid": "^8.3.0",
       "bcrypt": "^5.0.1",
       "cookie-parser": "^1.4.5",
       "cors": "^2.8.5",
@@ -27,7 +28,8 @@
       "mysql": "^2.14.1",
       "pg": "^8.5.1",
       "reflect-metadata": "^0.1.13",
-      "typeorm": "0.2.31"
+      "typeorm": "0.2.31",
+      "uuid": "^8.3.2"
    },
    "devDependencies": {
       "@types/node": "^8.0.29",
@@ -37,9 +39,11 @@
       "typescript": "3.3.3333"
    },
    "scripts": {
-      "start": "ts-node -r dotenv/config ./node_modules/typeorm/cli.js migrations:run;ts-node -r dotenv/config src/index.ts",
+      "start": "ts-node -r dotenv/config src/index.ts",
+      "rdbms:app:start": "ts-node -r dotenv/config ./node_modules/typeorm/cli.js migrations:run;ts-node -r dotenv/config src/index.ts",
       "run-migrations": "typeorm --config ormconfig.ts migrations:run",
-      "watch": "ts-node -r dotenv/config ./node_modules/typeorm/cli.js migrations:run; nodemon --watch \"src/**\" --ext \"ts,json\" --ignore \"src/**/*.spec.ts\" --exec \"ts-node src/index.ts\"",
+      "watch": "nodemon --watch \"src/**\" --ext \"ts,json\" --ignore \"src/**/*.spec.ts\" --exec \"ts-node src/index.ts\"",
+      "rdbms:app:watch": "ts-node -r dotenv/config ./node_modules/typeorm/cli.js migrations:run; nodemon --watch \"src/**\" --ext \"ts,json\" --ignore \"src/**/*.spec.ts\" --exec \"ts-node src/index.ts\"",
       "typeorm:local": "ts-node -r dotenv/config ./node_modules/typeorm/cli.js",
       "local": "DOTENV_CONFIG_PATH=./.env.local TS_NODE_PROJECT=tsconfig.json TS_NODE_TRANSPILE_ONLY=true ts-node -r dotenv/config",
       "g:migration": "yarn typeorm:local migration:generate -n",
