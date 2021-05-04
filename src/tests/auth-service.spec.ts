@@ -31,7 +31,7 @@ describe("Tests AuthService for functionality", () => {
     });
 
     beforeEach((done) => {
-        userRepo.delete({}).then(() => {
+        userRepo.deleteAll({}).then(() => {
             done();
         });
     });
