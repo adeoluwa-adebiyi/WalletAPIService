@@ -6,13 +6,13 @@ import { AuthServiceImpl } from "../services/auth-service-impl";
 import { AuthService, LoginResponse, UserTokenCredentials } from "../services/interfaces/auth-service";
 import { verify } from "jsonwebtoken";
 import { connect } from "../db/connection";
-import { getRepository, Repository } from "typeorm";
 import { UserRepository } from "../repos/interfaces/user-repo";
 import { TokenService } from "../services/interfaces/token-service";
 import { JwtTokenServiceImpl } from "../services/jwt-token-service-impl";
 import { DataHashService } from "../services/interfaces/data-hash-service";
 import { PasswordHashServiceImpl } from "../services/password-hash-service-impl";
 import { UserRepositoryImpl } from "../repos/user-repo-impl";
+import walletRepoImpl from "../repos/wallet-repo-impl";
 
 
 let authService: AuthService;
@@ -31,10 +31,12 @@ describe("Tests AuthService for functionality", () => {
     });
 
     beforeEach((done) => {
-        userRepo.deleteAll({}).then(() => {
+        console.log("IN B4 EACH");
+        userRepo.deleteAll().then(() => {
             done();
         });
     });
+
 
     it("Should register a user and return a valid User object", (done) => {
         authService.registerUser("tom@mail.com", "genshin_impact2000", "Tom", "Olsen").then((user: User) => {
@@ -46,26 +48,30 @@ describe("Tests AuthService for functionality", () => {
         }).catch(e => done(e));
     });
 
-    it("Should login a user and return a valid JWT token", (done) => {
-        passwordHashService.hash("genshin_impact2000").then((hash) => {
+    it("Should login a user and return a valid JWT token", async() => {
+        console.log("Started next test");
+        const hash:string = await passwordHashService.hash("genshin_impact2000");
 
-            userRepo.save({
+        const user: User = await userRepo.saveUser({
                 email: "tom@mail.com",
                 passwordHash: hash
-            }).then((user: User) => {
-                authService.login("tom@mail.com", "genshin_impact2000").then((response: LoginResponse) => {
-                    const { authToken } = response;
-                    const decodedToken = verify(authToken, config.APP_SECRET);
-                    const { sub = null, roles = null } = decodedToken as UserTokenCredentials;
-                    if (!sub)
-                        throw Error("UserId undefined");
-                    if (!roles)
-                        throw Error("UserRole undefined");
-                    done();
-                }).catch(e => done(e));
             });
+                console.log("User saved");
 
-        });
+        if(user){
+        
+            const { authToken } =  await authService.login("tom@mail.com", "genshin_impact2000");
+            const decodedToken = verify(authToken, config.APP_SECRET);
+            const { sub = null, roles = null } = decodedToken as UserTokenCredentials;
+
+            if (!sub)
+                throw Error("UserId undefined");
+            if (!roles)
+                throw Error("UserRole undefined");
+            return;
+        }else{
+            throw Error("User is null");
+        }
     });
 
     // it("Should register a user and return a valid User object", (done)=>{

@@ -1,14 +1,15 @@
-import { CallbackError, Schema } from "mongoose";
-import { TableInheritance } from "typeorm";
+import { Schema } from "mongoose";
 import { User } from "../models/user";
 import { v4 as uuidv4 } from "uuid";
 import WalletRepository from "../../repos/wallet-repo-impl";
+import UserModel from "../models/user";
+import WalletModel from "../models/wallet";
 
 const userSchema = new Schema({
     id: {
         type: String,
         unique: true,
-        default: ()=>uuidv4()
+        default: () => uuidv4()
     },
 
     firstName: {
@@ -42,7 +43,7 @@ const userSchema = new Schema({
         default: false
     },
 
-    suspended:  {
+    suspended: {
         type: Boolean,
         required: [true, "User suspended is required"],
         default: false
@@ -51,12 +52,17 @@ const userSchema = new Schema({
     timestamps: true
 });
 
-userSchema.pre<User>("save", async(next)=>{
-    // this.id = uuidv4();
-    WalletRepository.addWallet(this,"NGN").then((res)=>{
-        console.log("Running Pre-Save Hook for UserSchema")
-        next();
-    })
+userSchema.pre("deleteMany",{document: false, query: true}, async function (next) { 
+    const docs = await UserModel.find(this.getFilter()); 
+    const users = docs.map((item) => item.id); 
+    await WalletModel.deleteMany({ owner: { $in: users } }); next(null); 
+    // await WalletRepository.deleteWalletByUser(this as User);
+});
+
+userSchema.post<User>("save", async (user: User, next) => {
+    console.log("Running post-save hook");
+    const wallet = await WalletRepository.addWallet(user, "NGN");
+    wallet && next();
 });
 
 export default userSchema;

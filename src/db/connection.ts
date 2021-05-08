@@ -16,11 +16,17 @@ export const connect = async()=>{
     //     entities: ENTITIES,
     //     synchronize: false
     // });
-    return new Promise<void>((resolve, reject) =>mongoConnect(config.DB_URL,{}, (err: MongoError)=>{
+    return new Promise<void>((resolve, reject) =>mongoConnect(config.DB_URL,{
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+        useCreateIndex:true
+    }, (err: MongoError)=>{
+        console.log(err);
         if(err){
             console.log(err);
             reject(err);
         }
+        console.log("CONNECTED TO DB");
         resolve();
     }));
 }

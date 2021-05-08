@@ -48,6 +48,7 @@
       "local": "DOTENV_CONFIG_PATH=./.env.local TS_NODE_PROJECT=tsconfig.json TS_NODE_TRANSPILE_ONLY=true ts-node -r dotenv/config",
       "g:migration": "yarn typeorm:local migration:generate -n",
       "g:entity": "yarn typeorm:local entity:create -n",
-      "test": "mocha -r ts-node/register src/tests/**.spec.ts --no-timeout"
+      "test": "mocha -r ts-node/register src/tests/**.spec.ts --no-timeout",
+      "launch": "docker-compose up"
    }
 }

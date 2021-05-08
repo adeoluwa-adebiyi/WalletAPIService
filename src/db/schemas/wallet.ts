@@ -1,10 +1,13 @@
 import { Schema } from "mongoose";
+import { ObjectID } from "typeorm";
+import { v4 } from "uuid";
 
 const walletSchema = new Schema({
     id: {
         type: String,
         required: [true, "Wallet id is required"],
-        unique: true
+        unique: true,
+        default: () => v4()
     },
 
     owner: {

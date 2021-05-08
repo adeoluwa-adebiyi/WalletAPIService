@@ -1,11 +1,13 @@
-import { getRepository, Repository } from "typeorm";
-import { Currency } from "../entity/Currency";
 import WalletModel, { Wallet } from "../db/models/wallet";
 import { User } from "../db/models/user";
 import { WalletRepo } from "./interfaces/wallet-repo";
 import { Model } from "mongoose";
 
 class WalletRepoImpl implements WalletRepo {
+
+    async deleteWalletByUser(user: User): Promise<void> {
+        await WalletModel.deleteMany({ owner: user.id });
+    }
 
     private get model(): Model<Wallet> {
         return WalletModel;
@@ -16,9 +18,7 @@ class WalletRepoImpl implements WalletRepo {
     }
     
     async addWallet(user: User, currencySymbol: string): Promise<Wallet> {
-        const currency: Currency = await getRepository(Currency).findOne({ symbol: currencySymbol });
-        console.log(user);
-        const wallet: Wallet = await new WalletModel({ owner: user, currency }).save();
+        const wallet: Wallet = await new WalletModel({ owner: user.id, currency: currencySymbol }).save();
         console.log(wallet);
         return wallet;
     }

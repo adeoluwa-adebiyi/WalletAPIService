@@ -14,7 +14,7 @@ export class UserRepositoryImpl implements UserRepository{
     }
     
     async deleteAll(): Promise<void> {
-        return await this.model.remove({});
+        await this.model.deleteMany({}).exec();
     }
 
     async getUserByEmail(email: string): Promise<User> {
@@ -39,8 +39,8 @@ export class UserRepositoryImpl implements UserRepository{
         return await new UserModel({...user}).save();
     }
 
-    saveUser(user: User): Promise<User> {
-        throw new Error("Method not implemented.");
+    saveUser(user: Partial<User>): Promise<User> {
+        return new UserModel({...user}).save();
     }
     
 }

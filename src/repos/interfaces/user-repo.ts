@@ -9,5 +9,5 @@ export interface UserRepository extends Repository<Model<any>>{
     deleteUser(user: User): Promise<void>;
     deleteAll(): Promise<void>;
     addUser(user: Partial<User>): Promise<User>;
-    saveUser(user: User):Promise<User>;
+    saveUser(user: Partial<User>):Promise<User>;
 }
