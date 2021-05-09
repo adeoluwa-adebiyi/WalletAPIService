@@ -49,6 +49,8 @@ services:
         - DB_USER=postgres
         - DB_PORT=5432
         - PORT=4000
+        - KAFKA_BOOTSTRAP_SERVER=localhost:29092
+
 
     ports: 
       - 8000:4000
