@@ -12,5 +12,6 @@ export default{
     DB_PORT: null,
     DB_URL: null,
     PORT:null,
+    KAFKA_BOOTSTRAP_SERVER:null,
     ...process.env
 }

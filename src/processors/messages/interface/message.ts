@@ -1,4 +1,10 @@
-export interface Message extends Object{
+export interface Message{
+
+    entityId: String;
+
+    version: String;
+
+    name: String;
 
     getVersion(): String;
 

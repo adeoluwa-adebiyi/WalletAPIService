@@ -4,7 +4,8 @@ import { TransactionRequestResponseV1 } from "../messages/transactionRequestResp
 import { Processor } from "./processor";
 import { MessageHandler } from "../messageHandlers/interfaces/messageHandler";
 
-class TransactionRequestResponseProcessor implements Processor<Message>, MessageHandler<Message>{
+
+export class TransactionRequestResponseProcessor implements Processor<Message>, MessageHandler<Message>{
 
     constructor(){
 
@@ -34,7 +35,7 @@ class TransactionRequestResponseProcessor implements Processor<Message>, Message
     processMessage(message: Message) {
        const processor: MessageHandler<Message> = this.getProcessor(message);
 
-       if(processor == this){
+       if(processor === this){
         return this.process(message);
        }
        return;
