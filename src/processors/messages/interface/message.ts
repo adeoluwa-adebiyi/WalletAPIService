@@ -6,8 +6,14 @@ export interface Message{
 
     name: String;
 
-    getVersion(): String;
+    data: any;
 
-    getKey(): String;
+    getVersion(): string;
+
+    getKey(): string;
+
+    serialize(): string;
+
+    deserialize(json: string): Message;
 
 }

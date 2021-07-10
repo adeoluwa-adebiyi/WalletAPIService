@@ -2,32 +2,40 @@ import Record from "dataclass";
 import { Message } from "./interface/message";
 
 export class TransactionRequestResponseV1 extends Record<TransactionRequestResponseV1> implements Message {
+    data: any;
+    
+    serialize(): string {
+        throw new Error("Method not implemented.");
+    }
+    deserialize(json: string): Message {
+        throw new Error("Method not implemented.");
+    }
 
-    version: String = "1";
+    version: string = "1";
 
-    name: String = "TransactionRequestResponse";
+    name: string = "TransactionRequestResponse";
 
-    entityId: String;
+    entityId: string;
 
     amount: Number;
 
     type: "inflow" | "outflow" | "inflow" | "recharge";
 
-    sourceWallet: String;
+    sourceWallet: string;
 
-    destinationWallet: String;
+    destinationWallet: string;
 
-    requestee: String;
+    requestee: string;
 
     status: "pending" | "failed" | "success";
 
     time: Number;
 
-    getVersion(): String {
+    getVersion(): string {
         return this.version;
     }
 
-    getKey(): String {
+    getKey(): string {
         return `${this.name}:${this.version}`;
     }
 }

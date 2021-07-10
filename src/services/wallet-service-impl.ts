@@ -1,6 +1,6 @@
 import { Wallet } from "../db/models/wallet";
 import { User } from "../db/models/user";
-import { WalletService } from "./interfaces/wallet-service";
+import { MoneyReceiver, WalletService } from "./interfaces/wallet-service";
 import UserRepositoryImpl from "../repos/user-repo-impl";
 import WalletRepository from "../repos/wallet-repo-impl"
 import { UserRepository } from "../repos/interfaces/user-repo";
@@ -28,7 +28,7 @@ class WalletServiceImpl implements WalletService{
         throw new Error("Method not implemented.");
     }
 
-    debitWallet(walletId: number, amount: number): Promise<number> {
+    transferMoney(walletId: number, amount: number, receiver: MoneyReceiver) {
         throw new Error("Method not implemented.");
     }
 
