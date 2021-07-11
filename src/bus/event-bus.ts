@@ -1,4 +1,10 @@
-import { Producer as KafkaProducer, Consumer as KafkaConsumer, ConsumerSubscribeTopic, ConsumerRunConfig, EachMessagePayload, EachBatchPayload } from "kafkajs";
+import { 
+    Producer as KafkaProducer, 
+    Consumer as KafkaConsumer, 
+    ConsumerSubscribeTopic, 
+    ConsumerRunConfig, 
+    EachMessagePayload, 
+    EachBatchPayload } from "kafkajs";
 import { Message } from "../processors/messages/interface/message";
 
 export interface MessageHandler {

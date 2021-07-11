@@ -17,9 +17,11 @@ export const connect = async()=>{
     //     synchronize: false
     // });
     return new Promise<void>((resolve, reject) =>mongoConnect(config.DB_URL,{
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-        useCreateIndex:true
+        // useNewUrlParser: true,
+        // useUnifiedTopology: true,
+        // useCreateIndex:true
+        // useUnifiedTopology:true,
+        autoIndex:true
     }, (err: MongoError)=>{
         console.log(err);
         if(err){

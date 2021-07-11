@@ -1,11 +1,9 @@
 import config from "./config";
 import "reflect-metadata";
-import { createConnection } from "typeorm";
-import { User, UserSubscriber } from "./entity/User";
-import { ENTITIES } from "./entity";
 import app from "./app";
 import { connect } from "./db/connection";
 import { Consumer, EachBatchPayload, Kafka } from "kafkajs";
+import * as topics from "./topics";
 
 connect().then(async connection => {
 
@@ -27,7 +25,7 @@ connect().then(async connection => {
 
     await consumer.connect();
 
-    await consumer.subscribe({ topic: "transaction", });
+    await consumer.subscribe({ topic: topics.WALLET_CREDIT_FUNDS_REQUEST_TOPIC, });
 
     await consumer.run({
         eachBatch: async(payload: EachBatchPayload) => {
