@@ -29,6 +29,7 @@
       "mongoose": "^5.13.2",
       "morgan": "^1.10.0",
       "mysql": "^2.14.1",
+      "nodemon": "^2.0.12",
       "pg": "^8.5.1",
       "reflect-metadata": "^0.1.13",
       "typeorm": "0.2.31",

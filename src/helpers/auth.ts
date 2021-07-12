@@ -1,15 +1,18 @@
-import { USER_DOES_NOT_EXIST_ERROR } from "../common/errors";
-import { APP_SECRET } from "../config";
+import { USER_DOES_NOT_EXIST_ERROR, USER_TOKEN_EXPIRED_ERROR } from "../common/errors";
+import config from "../config";
 import { verify, decode } from "jsonwebtoken";
 
-const authorize = (jwt:string) => {
-    const valid = 
-    if(!auth){
+export const authorize = (jwt:string) => {
+    const token = verify(jwt, config.APP_SECRET);
+    if(!token){
         throw Error(USER_DOES_NOT_EXIST_ERROR);
     }
-    return auth.user
+    const auth:Object = decode(jwt);
+    if (auth["exp"] < Date.now()/1000)
+        throw Error(USER_TOKEN_EXPIRED_ERROR);
+    return auth["sub"];
 }
 
-const extractJwtToken = (authHeader: string) => {
+export const extractJwtToken = (authHeader: string) => {
     return authHeader.split(" ")[1].trim();
 }

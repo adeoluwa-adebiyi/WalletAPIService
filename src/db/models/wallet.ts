@@ -3,13 +3,13 @@ import walletSchema from "../schemas/wallet";
 
 
 export interface Wallet extends Document<any> {
-    id?: number;
+    id?: String;
 
-    owner: string;
+    owner: String;
 
-    balance?: number;
+    balance?: Number;
 
-    currency: string;
+    currency: String;
 
 }
 

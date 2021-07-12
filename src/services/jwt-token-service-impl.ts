@@ -5,8 +5,8 @@ import { UserTokenCredentials } from "./interfaces/auth-service";
 
 export class JwtTokenServiceImpl implements TokenService {
     encode(claims: UserTokenCredentials, expiresIn: string = "1h"): string {
-        const { exp = expiresIn, sub, ...otherClainms } = claims;
-        return sign({ ...otherClainms }, Buffer.from(config.APP_SECRET), { expiresIn: exp, subject: sub.toString()});
+        const { exp = expiresIn, sub, ...otherClaims } = claims;
+        return sign({ ...otherClaims }, Buffer.from(config.APP_SECRET), { expiresIn: exp, subject: sub.toString()});
     }
 
     verify(jwt: string): object {
@@ -18,3 +18,5 @@ export class JwtTokenServiceImpl implements TokenService {
     }
 
 }
+
+export default new JwtTokenServiceImpl();

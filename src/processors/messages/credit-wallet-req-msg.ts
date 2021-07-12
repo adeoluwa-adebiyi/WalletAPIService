@@ -1,18 +1,32 @@
 import { Message } from "./interface/message";
 
-export class CreditWalletReqMessage implements Message{
+export class CreditWalletReqMessage implements Message {
     entityId: string;
     version: string = "1";
-    name: String = "credit-wallet";
+    name: String = "credit-wallet-request";
     data: any;
     walletUserId: number;
     amount: number;
+    cardNo: String;
+    cardUsername: String;
+    cardCCV: String;
+    cardPIN: String;
+    cardExp: String;
     walletId: any;
 
-    constructor(walletUserId: number, amount: number, walletId: number){
+    constructor(walletUserId: number, amount: number, walletId: String, cardNo: String,
+        cardUsername: String,
+        cardCCV: String,
+        cardPIN: String,
+        cardExp: String) {
         this.walletUserId = walletUserId;
         this.amount = amount;
         this.walletId = walletId;
+        this.cardNo = cardNo;
+        this.cardUsername = cardUsername;
+        this.cardCCV = cardCCV;
+        this.cardPIN = cardPIN;
+        this.cardExp = cardExp;
     }
 
     getVersion(): string {
@@ -31,7 +45,12 @@ export class CreditWalletReqMessage implements Message{
             data: {
                 walletUserId: this.walletUserId,
                 walletId: this.walletId,
-                amount: this.amount
+                amount: this.amount,
+                cardNo: this.cardNo,
+                cardUsername: this.cardUsername,
+                cardCCV: this.cardCCV,
+                cardPIN: this.cardPIN,
+                cardExp: this.cardExp
             }
         })
     }
@@ -41,6 +60,11 @@ export class CreditWalletReqMessage implements Message{
         this.amount = data.amount;
         this.walletId = data.userId;
         this.walletUserId = data.walletUserId;
+        this.cardNo = data.cardNo;
+        this.cardUsername = data.cardUsername;
+        this.cardCCV = data.cardCCV;
+        this.cardPIN = data.cardPIN;
+        this.cardExp = data.cardExp;
         return this;
     }
 
