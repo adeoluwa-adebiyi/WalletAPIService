@@ -22,15 +22,14 @@ const fundWallet = async (req: any, res: Response) => {
         const cardDetailsFields = [
             "cardNo",
             "cardUsername",
-            "cardCCV",
+            "cardCVV",
             "cardPIN",
             "cardExp"
         ]
 
-        for(let deets of cardDetails){
-            if(Object.keys(cardDetails).indexOf(deets) === -1){
+        for(let deets of cardDetailsFields){
+            if(!cardDetails[deets]){
                 throw Error(`'${deets}' not provided in cardDetails`);
-                break;
             }
         }
 
@@ -43,7 +42,7 @@ const fundWallet = async (req: any, res: Response) => {
                 wallet.id,
                 cardDetails.cardNo,
                 cardDetails.cardUsername,
-                cardDetails.cardCCV,
+                cardDetails.cardCVV,
                 cardDetails.cardPIN,
                 cardDetails.cardExp
             ).serialize()}
