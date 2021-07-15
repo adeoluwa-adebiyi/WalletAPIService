@@ -4,6 +4,7 @@ import app from "./app";
 import { connect } from "./db/connection";
 import { Consumer, EachBatchPayload, Kafka } from "kafkajs";
 import * as topics from "./topics";
+import { WALLET_API_SERVICE } from "./constants";
 
 connect().then(async connection => {
 
@@ -20,7 +21,7 @@ connect().then(async connection => {
     });
 
     const consumer: Consumer = kafka.consumer({
-        groupId: "wallet-service",
+        groupId: WALLET_API_SERVICE,
     })
 
     await consumer.connect();

@@ -36,18 +36,20 @@ const fundWallet = async (req: any, res: Response) => {
         const wallet = await WalletServiceImpl.getWallet(user, currency);
         const credWalletRequest = await WalletCreditRequestRepoImpl.creditWallet(wallet.id, amount, cardDetails, currency);
         (await KafkaService.getInstance()).producer.send({topic:WALLET_CREDIT_FUNDS_REQUEST_TOPIC, messages:[
-            {key:"", value:new CreditWalletReqMessage(
-                req.user.id,
+            {key:"", value:new CreditWalletReqMessage({
+                walletUserId: req.user.id,
                 amount,
-                wallet.id,
-                cardDetails.cardNo,
-                cardDetails.cardUsername,
-                cardDetails.cardCVV,
-                cardDetails.cardPIN,
-                cardDetails.cardExp
-            ).serialize()}
+                walletId: wallet.id,
+                cardNo: cardDetails.cardNo,
+                cardUsername: cardDetails.cardUsername,
+                cardCVV: cardDetails.cardCVV,
+                cardPIN: cardDetails.cardPIN,
+                cardExp: cardDetails.cardExp,
+                requestId: credWalletRequest.id,
+                email: cardDetails.email,
+                currency
+            }).serialize()}
         ]});
-        console.log(credWalletRequest);
         res.json({
             data: credWalletRequest
         });
