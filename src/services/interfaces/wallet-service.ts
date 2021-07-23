@@ -25,6 +25,7 @@ export interface WalletService{
     createUserWallet(userId: string, currency:string): Promise<Wallet>;
     deleteWallet(walletId: number): Promise<void>;
     creditWallet(walletId: String, amount: number, cardDeets:CardDetails, currency: String): Promise<any>;
+    notifyOnWalletCreation(walletId: String, userId: String, currency: String): Promise<void>;
     transferMoney(walletId: number, amount: number, receiver: MoneyReceiver);
     // debitWallet(walletId: number, amount: number): Promise<number>;
     obtainWalletBalance(walletId:number): Promise<number>;

@@ -4,6 +4,7 @@ import { v4 as uuidv4 } from "uuid";
 import WalletRepository from "../../repos/wallet-repo-impl";
 import UserModel from "../models/user";
 import WalletModel from "../models/wallet";
+import walletServiceImpl from "../../services/wallet-service-impl";
 
 const userSchema = new Schema({
     id: {
@@ -62,6 +63,7 @@ userSchema.pre("deleteMany",{document: false, query: true}, async function (next
 userSchema.post<User>("save", async (user: User, next) => {
     console.log("Running post-save hook");
     const wallet = await WalletRepository.addWallet(user, "NGN");
+    await walletServiceImpl.notifyOnWalletCreation(wallet.id, wallet.owner, wallet.currency);
     wallet && next();
 });
 

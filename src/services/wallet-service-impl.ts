@@ -7,17 +7,28 @@ import { UserRepository } from "../repos/interfaces/user-repo";
 import { WalletRepo } from "../repos/interfaces/wallet-repo";
 import WalletCreditRequestRepoImpl from "../repos/wallet-credit-request-repo-impl";
 import { WalletCreditRequestRepo } from "../repos/interfaces/wallet-credit-requests-repo";
+import eventBus from "../bus/event-bus";
+import { WalletCreatedMessage } from "../processors/messages/account-created-msg";
+import { WALLET_EVENTS_TOPIC } from "../topics";
 
 
 
 class WalletServiceImpl implements WalletService{
 
-    private get userRepo(): UserRepository{
-        return UserRepositoryImpl;
+    async notifyOnWalletCreation(walletId: String, userId: String, currency: String): Promise<void> {
+        (await eventBus).submitRequest(new WalletCreatedMessage({
+            walletId,
+            userId,
+            currency
+        }),WALLET_EVENTS_TOPIC);
     }
 
     private get walletRepo(): WalletRepo{
         return WalletRepositoryImpl;
+    }
+
+    private get userRepo(): UserRepository{
+        return UserRepositoryImpl;
     }
 
     private get walletCreditRequestRepo(): WalletCreditRequestRepo{
