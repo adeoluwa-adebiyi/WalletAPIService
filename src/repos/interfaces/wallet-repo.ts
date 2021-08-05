@@ -8,5 +8,6 @@ export interface WalletRepo extends Repository<Wallet>{
     deleteWallet(wallet: Wallet): Promise<void>;
     deleteWalletById(id: number):Promise<void>;
     deleteWalletByUser(user: User): Promise<void>;
+    getUserWallet(userId: string, currency):Promise<Wallet>;
     saveWallet(wallet: Wallet): Promise<Wallet>;
 }

@@ -1,19 +1,54 @@
 import wallet, { Wallet } from "../db/models/wallet";
 import { User } from "../db/models/user";
-import { CardDetails, MoneyReceiver, WalletService } from "./interfaces/wallet-service";
+import { CardDetails, MoneyReceiver, TransferRequest, WalletService, WalletTransferReceiver } from "./interfaces/wallet-service";
 import UserRepositoryImpl from "../repos/user-repo-impl";
 import WalletRepositoryImpl from "../repos/wallet-repo-impl"
 import { UserRepository } from "../repos/interfaces/user-repo";
 import { WalletRepo } from "../repos/interfaces/wallet-repo";
 import WalletCreditRequestRepoImpl from "../repos/wallet-credit-request-repo-impl";
 import { WalletCreditRequestRepo } from "../repos/interfaces/wallet-credit-requests-repo";
-import eventBus from "../bus/event-bus";
+import eventBus, { KafkaJSEventBus } from "../bus/event-bus";
 import { WalletCreatedMessage } from "../processors/messages/account-created-msg";
 import { WALLET_EVENTS_TOPIC } from "../topics";
-
+import { sendMessage } from "../helpers/messaging";
+import { KafkaService } from "../kafka";
+import { WalletTransferMoneyMessage } from "../processors/messages/wallet-transfer-money-message";
 
 
 class WalletServiceImpl implements WalletService{
+
+    async transferMoney(walletId: string, amount: number, receiver: MoneyReceiver): Promise<TransferRequest> {
+        if(receiver.hasOwnProperty("walletUser")){
+            try{
+                const request:TransferRequest = await this.transferToWallet(walletId, (<WalletTransferReceiver>receiver).walletUser, amount);
+                return request;
+            }catch(e){
+                throw Error("Wallet transfer request failed")
+            }
+        }
+    }
+
+    async transferToWallet(ownerWalletId: string, userId: string, amount: number): Promise<TransferRequest> {
+        const ownerWallet: Wallet = await this.walletRepo.getWalletById(ownerWalletId);
+        let destinationWalletId: string = (await this.walletRepo.getUserWallet(userId, ownerWallet.currency)).id.toString();
+        if(!destinationWalletId){
+            destinationWalletId = (await this.createUserWallet(userId, ownerWallet.currency.toString())).id.toString();
+        }
+        const request = await TransferRequestRepo.createTransferRequest({
+            sourceWalletId: ownerWalletId,
+            destinationWalletId,
+            amount: amount,
+        });
+        const transfer = 
+        const transferRequest = new WalletTransferMoneyMessage({
+            sourceWalletId: ownerWalletId,
+            destinationWalletId,
+            amount: amount,
+
+        });
+        await sendMessage((await eventBus), WALLET_EVENTS_TOPIC, transferRequest);
+        return transferRequest;
+    }
 
     async notifyOnWalletCreation(walletId: String, userId: String, currency: String): Promise<void> {
         (await eventBus).submitRequest(new WalletCreatedMessage({
@@ -53,10 +88,6 @@ class WalletServiceImpl implements WalletService{
             cardDeets,
             currency
         );
-    }
-
-    async transferMoney(walletId: number, amount: number, receiver: MoneyReceiver) {
-        throw new Error("Method not implemented.");
     }
 
     async obtainWalletBalance(walletId: number): Promise<number> {

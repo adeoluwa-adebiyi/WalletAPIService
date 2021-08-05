@@ -4,6 +4,10 @@ import { WalletRepo } from "./interfaces/wallet-repo";
 import { Model } from "mongoose";
 
 class WalletRepoImpl implements WalletRepo {
+    
+    getUserWallet(userId: string, currency: any): Promise<Wallet> {
+        throw new Error("Method not implemented.");
+    }
 
     async deleteWalletByUser(user: User): Promise<void> {
         await WalletModel.deleteMany({ owner: user.id });
