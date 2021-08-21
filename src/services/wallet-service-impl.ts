@@ -1,6 +1,6 @@
 import wallet, { Wallet } from "../db/models/wallet";
 import { User } from "../db/models/user";
-import { CardDetails, MoneyReceiver, TransferRequest, WalletService, WalletTransferReceiver } from "./interfaces/wallet-service";
+import { CardDetails, MoneyReceiver, TransferRequest, WalletService, WalletTransferReceiver, WalletTransferRequest } from "./interfaces/wallet-service";
 import UserRepositoryImpl from "../repos/user-repo-impl";
 import WalletRepositoryImpl from "../repos/wallet-repo-impl"
 import { UserRepository } from "../repos/interfaces/user-repo";
@@ -9,10 +9,11 @@ import WalletCreditRequestRepoImpl from "../repos/wallet-credit-request-repo-imp
 import { WalletCreditRequestRepo } from "../repos/interfaces/wallet-credit-requests-repo";
 import eventBus, { KafkaJSEventBus } from "../bus/event-bus";
 import { WalletCreatedMessage } from "../processors/messages/account-created-msg";
-import { WALLET_EVENTS_TOPIC } from "../topics";
+import { WALLET_EVENTS_TOPIC, WALLET_TRX_EVENTS_TOPIC } from "../topics";
 import { sendMessage } from "../helpers/messaging";
 import { KafkaService } from "../kafka";
 import { WalletTransferMoneyMessage } from "../processors/messages/wallet-transfer-money-message";
+import  TransferRequestRepo  from "../repos/transfer-request-repo-impl";
 
 
 class WalletServiceImpl implements WalletService{
@@ -34,19 +35,19 @@ class WalletServiceImpl implements WalletService{
         if(!destinationWalletId){
             destinationWalletId = (await this.createUserWallet(userId, ownerWallet.currency.toString())).id.toString();
         }
-        const request = await TransferRequestRepo.createTransferRequest({
+        const transfer = await TransferRequestRepo.createWalletTransferRequest(<WalletTransferRequest>{
             sourceWalletId: ownerWalletId,
             destinationWalletId,
             amount: amount,
         });
-        const transfer = 
+
         const transferRequest = new WalletTransferMoneyMessage({
             sourceWalletId: ownerWalletId,
             destinationWalletId,
             amount: amount,
-
+            requestId: transfer.requestId
         });
-        await sendMessage((await eventBus), WALLET_EVENTS_TOPIC, transferRequest);
+        await sendMessage((await eventBus), WALLET_TRX_EVENTS_TOPIC, transferRequest);
         return transferRequest;
     }
 
@@ -71,9 +72,7 @@ class WalletServiceImpl implements WalletService{
     }
 
     async createUserWallet(userId: string, currency: string="NGN"): Promise<Wallet> {
-        console.log(`USERID: ${userId}`);
         const user: User = await this.userRepo.getUserById(userId);
-        console.log(`USER: ${user}`);
         return await this.walletRepo.addWallet(user, currency);
     }
 
