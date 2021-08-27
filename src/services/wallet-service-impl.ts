@@ -35,6 +35,7 @@ class WalletServiceImpl implements WalletService{
         if(!destinationWalletId){
             destinationWalletId = (await this.createUserWallet(userId, ownerWallet.currency.toString())).id.toString();
         }
+        
         const transfer = await TransferRequestRepo.createWalletTransferRequest(<WalletTransferRequest>{
             sourceWalletId: ownerWalletId,
             destinationWalletId,
