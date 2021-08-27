@@ -27,7 +27,7 @@ export const transferToWallet = (req:Request, res: Response) => {
     }catch(e){
         res.status(500).send({
             errors:[
-
+                e.message
             ]
         });
     }
