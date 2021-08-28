@@ -21,6 +21,7 @@ app.use(cookieParser());
 
 app.use("/", BaseRoutes.homeRoutes);
 app.use("/wallet", BaseRoutes.walletRoutes);
+app.use("/transfer", BaseRoutes.transferRoutes);
 
 app.use(helmet());
 

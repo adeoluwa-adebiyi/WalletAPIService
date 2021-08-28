@@ -17,8 +17,9 @@ class WalletRepoImpl implements WalletRepo {
         return WalletModel;
     }
 
-    getWalletById(id: string): Promise<Wallet> {
-        throw new Error("Method not implemented.");
+    async getWalletById(id: string): Promise<Wallet> {
+        const wallet: Wallet = await WalletModel.findOne({id});
+        return wallet;
     }
     
     async addWallet(user: User, currencySymbol: string): Promise<Wallet> {
