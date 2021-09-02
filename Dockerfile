@@ -10,5 +10,5 @@ RUN npm install
 
 EXPOSE 8000
 
-CMD ["yarn", "start"]
+CMD ["npm","run", "start"]
 
