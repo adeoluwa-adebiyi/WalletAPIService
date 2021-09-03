@@ -9,7 +9,15 @@ import { WALLET_API_SERVICE } from "./constants";
 connect().then(async connection => {
 
     console.log("STARTING SERVER");
-    app.listen(config.PORT);
+
+    try{
+        app.listen(parseInt(config.PORT), ()=>{
+            console.log("SERVER LISTENING SUCCESSFULLY");
+        });
+    }catch(e){
+        console.log("SERVER LISTENING ERROR:");
+        console.log(e);
+    }
 
     console.log("STARTING PROCESSORS");
 
