@@ -35,7 +35,7 @@ export class UserRepositoryImpl implements UserRepository{
         throw new Error("Method not implemented.");
     }
 
-    async addUser(user: Partial<User>): Promise<User> {
+    async addUser(user: any): Promise<User> {
         return await new UserModel({...user}).save();
     }
 

@@ -1,4 +1,4 @@
-import { Schema } from "mongoose";
+import { FilterQuery, Schema } from "mongoose";
 import { User } from "../models/user";
 import { v4 as uuidv4 } from "uuid";
 import WalletRepository from "../../repos/wallet-repo-impl";
@@ -54,7 +54,7 @@ const userSchema = new Schema({
 });
 
 userSchema.pre("deleteMany",{document: false, query: true}, async function (next) { 
-    const docs = await UserModel.find(this.getFilter()); 
+    const docs = await UserModel.find(this.getFilter() as FilterQuery<User>); 
     const users = docs.map((item) => item.id); 
     await WalletModel.deleteMany({ owner: { $in: users } }); next(null); 
     // await WalletRepository.deleteWalletByUser(this as User);

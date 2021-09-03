@@ -1,7 +1,7 @@
 import { Document, model } from "mongoose";
 import userSchema from "../schemas/user";
 
-export interface User extends Document<User>{
+export interface User extends Document<any>{
     id?: string;
 
     firstName?: string;
