@@ -15,23 +15,23 @@ const fundWallet = async (req: any, res: Response) => {
             throw Error("currency of wallet not provided")
         }
 
-        if(!cardDetails){
-            throw Error("cardDetails not provided")
-        }
+        // if(!cardDetails){
+        //     throw Error("cardDetails not provided")
+        // }
 
-        const cardDetailsFields = [
-            "cardNo",
-            "cardUsername",
-            "cardCVV",
-            "cardPIN",
-            "cardExp"
-        ]
+        // const cardDetailsFields = [
+        //     "cardNo",
+        //     "cardUsername",
+        //     "cardCVV",
+        //     "cardPIN",
+        //     "cardExp"
+        // ]
 
-        for(let deets of cardDetailsFields){
-            if(!cardDetails[deets]){
-                throw Error(`'${deets}' not provided in cardDetails`);
-            }
-        }
+        // for(let deets of cardDetailsFields){
+        //     if(!cardDetails[deets]){
+        //         throw Error(`'${deets}' not provided in cardDetails`);
+        //     }
+        // }
 
         const wallet = await WalletServiceImpl.getWallet(user, currency);
         const credWalletRequest = await WalletCreditRequestRepoImpl.creditWallet(wallet.id, amount, cardDetails, currency);
@@ -40,13 +40,13 @@ const fundWallet = async (req: any, res: Response) => {
                 walletUserId: req.user.id,
                 amount,
                 walletId: wallet.id,
-                cardNo: cardDetails.cardNo,
-                cardUsername: cardDetails.cardUsername,
-                cardCVV: cardDetails.cardCVV,
-                cardPIN: cardDetails.cardPIN,
-                cardExp: cardDetails.cardExp,
+                cardNo: cardDetails?.cardNo ?? "",
+                cardUsername: cardDetails?.cardUsername ?? "",
+                cardCVV: cardDetails?.cardCVV ?? "",
+                cardPIN: cardDetails?.cardPIN ?? "",
+                cardExp: cardDetails?.cardExp ?? "",
                 requestId: credWalletRequest.id,
-                email: cardDetails.email,
+                email: cardDetails?.email ?? "",
                 currency
             }).serialize()}
         ]});
