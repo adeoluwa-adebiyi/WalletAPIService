@@ -16,10 +16,11 @@ export class AuthServiceImpl implements AuthService{
         private passwordHashService: DataHashService = new PasswordHashServiceImpl()
     ){}
     
-    async registerUser(email: string, password: string, firstname?: string, lastname?: string):Promise<User> {
+    async registerUser(email: string, password: string, username: string, firstname?: string, lastname?: string):Promise<User> {
             const user: User = await this.userRepo.addUser({
                 email,
                 passwordHash: await this.passwordHashService.hash(password),
+                username,
                 firstName: firstname,
                 lastName: lastname,
             });

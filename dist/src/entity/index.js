@@ -1,7 +1,9 @@
-var Currency_1 = require("./Currency");
-var Wallet_1 = require("./Wallet");
-var ExchangeRate_1 = require("./ExchangeRate");
-var User_1 = require("./User");
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const Currency_1 = require("./Currency");
+const Wallet_1 = require("./Wallet");
+const ExchangeRate_1 = require("./ExchangeRate");
+const User_1 = require("./User");
 exports.ENTITIES = [
     Wallet_1.Wallet,
     Currency_1.Currency,

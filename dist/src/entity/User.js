@@ -1,71 +1,100 @@
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
+"use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") return Reflect.decorate(decorators, target, key, desc);
-    switch (arguments.length) {
-        case 2: return decorators.reduceRight(function(o, d) { return (d && d(o)) || o; }, target);
-        case 3: return decorators.reduceRight(function(o, d) { return (d && d(target, key)), void 0; }, void 0);
-        case 4: return decorators.reduceRight(function(o, d) { return (d && d(target, key, o)) || o; }, desc);
-    }
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var typeorm_1 = require("typeorm");
-var Wallet_1 = require("./Wallet");
-var User = (function (_super) {
-    __extends(User, _super);
-    function User() {
-        _super.apply(this, arguments);
-    }
-    __decorate([
-        typeorm_1.PrimaryGeneratedColumn(), 
-        __metadata('design:type', Number)
-    ], User.prototype, "id");
-    __decorate([
-        typeorm_1.Column({
-            nullable: true
-        }), 
-        __metadata('design:type', String)
-    ], User.prototype, "firstName");
-    __decorate([
-        typeorm_1.Column({
-            nullable: false,
-            unique: true
-        }), 
-        __metadata('design:type', String)
-    ], User.prototype, "email");
-    __decorate([
-        typeorm_1.Column({
-            nullable: false
-        }), 
-        __metadata('design:type', String)
-    ], User.prototype, "passwordHash");
-    __decorate([
-        typeorm_1.Column({
-            nullable: true
-        }), 
-        __metadata('design:type', String)
-    ], User.prototype, "lastName");
-    __decorate([
-        typeorm_1.Column({
-            nullable: true
-        }), 
-        __metadata('design:type', Date)
-    ], User.prototype, "dob");
-    __decorate([
-        typeorm_1.OneToMany(function (type) { return Wallet_1.Wallet; }, function (wallet) { return wallet.owner; }),
-        typeorm_1.JoinColumn(), 
-        __metadata('design:type', Array)
-    ], User.prototype, "wallets");
-    User = __decorate([
-        typeorm_1.Entity(), 
-        __metadata('design:paramtypes', [])
-    ], User);
-    return User;
-})(typeorm_1.BaseEntity);
+Object.defineProperty(exports, "__esModule", { value: true });
+const typeorm_1 = require("typeorm");
+const Wallet_1 = require("./Wallet");
+let User = class User extends typeorm_1.BaseEntity {
+};
+__decorate([
+    typeorm_1.PrimaryGeneratedColumn(),
+    __metadata("design:type", Number)
+], User.prototype, "id", void 0);
+__decorate([
+    typeorm_1.Column({
+        nullable: true
+    }),
+    __metadata("design:type", String)
+], User.prototype, "firstName", void 0);
+__decorate([
+    typeorm_1.Column({
+        nullable: false,
+        unique: true
+    }),
+    __metadata("design:type", String)
+], User.prototype, "email", void 0);
+__decorate([
+    typeorm_1.Column({
+        nullable: false
+    }),
+    __metadata("design:type", String)
+], User.prototype, "passwordHash", void 0);
+__decorate([
+    typeorm_1.Column({
+        nullable: true
+    }),
+    __metadata("design:type", String)
+], User.prototype, "lastName", void 0);
+__decorate([
+    typeorm_1.Column({
+        nullable: true
+    }),
+    __metadata("design:type", Date)
+], User.prototype, "dob", void 0);
+__decorate([
+    typeorm_1.OneToMany(type => Wallet_1.Wallet, wallet => wallet.owner),
+    typeorm_1.JoinColumn(),
+    __metadata("design:type", Array)
+], User.prototype, "wallets", void 0);
+__decorate([
+    typeorm_1.Column({
+        type: "boolean",
+        default: false
+    }),
+    __metadata("design:type", Boolean)
+], User.prototype, "verified", void 0);
+__decorate([
+    typeorm_1.Column({
+        type: "boolean",
+        default: false
+    }),
+    __metadata("design:type", Boolean)
+], User.prototype, "suspended", void 0);
+__decorate([
+    typeorm_1.Column({
+        type: "timestamp with time zone",
+        default: () => "CURRENT_TIMESTAMP"
+    }),
+    __metadata("design:type", Date)
+], User.prototype, "createdAt", void 0);
+__decorate([
+    typeorm_1.Column({
+        type: "timestamp with time zone",
+        default: () => "CURRENT_TIMESTAMP"
+    }),
+    __metadata("design:type", Date)
+], User.prototype, "updatedAt", void 0);
+User = __decorate([
+    typeorm_1.Entity()
+], User);
 exports.User = User;
+let UserSubscriber = class UserSubscriber {
+    /**
+     * Indicates that this subscriber only listen to User events.
+     */
+    listenTo() {
+        return User;
+    }
+};
+UserSubscriber = __decorate([
+    typeorm_1.EventSubscriber()
+], UserSubscriber);
+exports.UserSubscriber = UserSubscriber;
 //# sourceMappingURL=User.js.map

@@ -4,7 +4,9 @@ import { v4 as uuidv4 } from "uuid";
 import WalletRepository from "../../repos/wallet-repo-impl";
 import UserModel from "../models/user";
 import WalletModel from "../models/wallet";
-import walletServiceImpl from "../../services/wallet-service-impl";
+// import walletServiceImpl from "../../services/wallet-service-impl";
+
+const DEFAULT_CURRENCY = "NGN";
 
 const userSchema = new Schema({
     id: {
@@ -21,6 +23,11 @@ const userSchema = new Schema({
     email: {
         type: String,
         required: [true, "User email is required"],
+        unique: true
+    },
+    username: {
+        type: String,
+        required: [true, "User username is required"],
         unique: true
     },
     passwordHash: {
@@ -62,8 +69,8 @@ userSchema.pre("deleteMany",{document: false, query: true}, async function (next
 
 userSchema.post<User>("save", async (user: User, next) => {
     console.log("Running post-save hook");
-    const wallet = await WalletRepository.addWallet(user, "NGN");
-    await walletServiceImpl.notifyOnWalletCreation(wallet.id, wallet.owner, wallet.currency);
+    const wallet = await WalletRepository.addWallet(user, DEFAULT_CURRENCY);
+    // await walletServiceImpl.notifyOnWalletCreation(wallet.id, wallet.owner, wallet.currency);
     wallet && next();
 });
 

@@ -1,0 +1,1 @@
+{"version":3,"file":"bankTransfer.js","sourceRoot":"","sources":["../../../../src/db/schemas/bankTransfer.ts"],"names":[],"mappings":";;AAAA,uCAAkC;AAElC,kBAAe,IAAI,iBAAM,CAAC;IACtB,KAAK,EAAE;QACH,IAAI,EAAE,MAAM;QACZ,QAAQ,EAAE,CAAC,IAAI,EAAE,uBAAuB,CAAC;KAC5C;IACD,WAAW,EAAC;QACR,IAAI,EAAG,MAAM;QACb,QAAQ,EAAE,CAAC,IAAI,EAAE,6BAA6B,CAAC;KAClD;CACJ,CAAC,CAAC"}

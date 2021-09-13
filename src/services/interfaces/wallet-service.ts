@@ -16,6 +16,8 @@ export interface WalletTransferRequest{
     sourceWalletId: string;
     destinationWalletId: string;
     amount: number;
+    currency?:String;
+    requestId?: String;
 }
 
 export interface BankTransferRequest{

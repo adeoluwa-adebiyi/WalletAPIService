@@ -5,6 +5,7 @@ import { Model } from "mongoose";
 
 export interface UserRepository extends Repository<Model<any>>{
     getUserById(id: string): Promise<User>;
+    getUserByUsername(username: string): Promise<User>;
     getUserByEmail(email: string): Promise<User>;
     deleteUser(user: User): Promise<void>;
     deleteAll(): Promise<void>;

@@ -1,33 +1,41 @@
-var config_1 = require("./config");
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const config_1 = require("./config");
 require("reflect-metadata");
-var typeorm_1 = require("typeorm");
-var User_1 = require("./entity/User");
-var entity_1 = require("./entity");
-typeorm_1.createConnection({
-    type: "postgres",
-    username: config_1.default.DB_USER,
-    host: config_1.default.DB_HOST,
-    password: config_1.default.DB_PASSWORD,
-    database: config_1.default.DB_NAME,
-    port: Number.parseInt(config_1.default.DB_PORT),
-    entities: entity_1.ENTITIES,
-    synchronize: false
-}).then(async, function (connection) {
-    console.log("Inserting a new user into the database...");
-    var user = new User_1.User();
-    user.firstName = "Timber";
-    user.lastName = "Saw";
-    user.email = "timber@mail.com";
-    user.passwordHash = "testhash";
-    var userRepo = await, connection, getRepository = (User_1.User);
-    await;
-    userRepo.delete({ id: null });
-    await;
-    userRepo.save(user);
-    console.log("Saved a new user with id: " + user.id);
-    console.log("Loading users from the database...");
-    var users = await, userRepo, find = ();
-    console.log("Loaded users: ", users);
-    console.log("Here you can setup and run express/koa/any other framework.");
-}).catch(function (error) { return console.log(error); });
+const app_1 = require("./app");
+const connection_1 = require("./db/connection");
+const kafkajs_1 = require("kafkajs");
+const topics = require("./topics");
+const constants_1 = require("./constants");
+connection_1.connect().then(async (connection) => {
+    console.log("STARTING SERVER");
+    try {
+        app_1.default.listen(parseInt(config_1.default.PORT), () => {
+            console.log("SERVER LISTENING SUCCESSFULLY");
+        });
+    }
+    catch (e) {
+        console.log("SERVER LISTENING ERROR:");
+        console.log(e);
+    }
+    console.log("STARTING PROCESSORS");
+    const kafka = new kafkajs_1.Kafka({
+        clientId: "wallet-service",
+        brokers: [
+            config_1.default.KAFKA_BOOTSTRAP_SERVER
+        ]
+    });
+    const consumer = kafka.consumer({
+        groupId: constants_1.WALLET_API_SERVICE,
+    });
+    await consumer.connect();
+    await consumer.subscribe({ topic: topics.WALLET_CREDIT_FUNDS_REQUEST_TOPIC, });
+    await consumer.run({
+        eachBatch: async (payload) => {
+            for (let message of payload.batch.messages) {
+                console.log(message);
+            }
+        }
+    });
+}).catch(error => console.log(error));
 //# sourceMappingURL=index.js.map

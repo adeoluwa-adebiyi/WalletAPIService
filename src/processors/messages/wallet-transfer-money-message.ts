@@ -5,6 +5,7 @@ export interface WalletTransferMoneyMessageParams {
     destinationWalletId: string;
     amount: number;
     requestId: string;
+    currency: string;
 }
 
 export class WalletTransferMoneyMessage implements Message, WalletTransferMoneyMessageParams {
@@ -16,11 +17,13 @@ export class WalletTransferMoneyMessage implements Message, WalletTransferMoneyM
     destinationWalletId: string;
     amount: number;
     requestId: string;
+    currency: string;
 
     constructor(params?: WalletTransferMoneyMessageParams) {
         this.sourceWalletId = params?.sourceWalletId;
         this.destinationWalletId = params?.destinationWalletId;
         this.amount = params?.amount;
+        this.currency = params?.currency;
         this.requestId = params?.requestId;
     }
 
@@ -41,7 +44,8 @@ export class WalletTransferMoneyMessage implements Message, WalletTransferMoneyM
                 sourceWalletId: this.sourceWalletId,
                 destinationWalletId: this.destinationWalletId,
                 amount: this.amount,
-                requestId: this.requestId
+                requestId: this.requestId,
+                currency: this.currency
             }
         })
     }
@@ -53,6 +57,7 @@ export class WalletTransferMoneyMessage implements Message, WalletTransferMoneyM
         this.sourceWalletId = data.sourceWalletId;
         this.destinationWalletId = data.destinationWalletId;
         this.requestId = data.requestId;
+        this.currency = data.currency;
         return this;
     }
 

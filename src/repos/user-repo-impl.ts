@@ -13,6 +13,10 @@ export class UserRepositoryImpl implements UserRepository{
     constructor(){
     }
     
+    async getUserByUsername(username: string): Promise<User> {
+        return await this.model.findOne({username});
+    }
+    
     async deleteAll(): Promise<void> {
         await this.model.deleteMany({}).exec();
     }

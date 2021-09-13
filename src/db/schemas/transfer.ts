@@ -8,7 +8,7 @@ const transferSchema = new Schema({
     },
     requestId: {
         type: String,
-        default: uuidv4()
+        default: ()=> uuidv4()
     },
     description: {
         type: String,
@@ -18,6 +18,11 @@ const transferSchema = new Schema({
         required: [true, "currency cannot be empty"],
         enum: ["NGN", "USD", "ZAR"]
     },
+    status: {
+        type: String,
+        enum: ["pending", "success", "failure"],
+        default: "pending"
+    }
 }, {
     timestamps: true,
     discriminatorKey: "transferType",

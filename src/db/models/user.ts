@@ -8,6 +8,8 @@ export interface User extends Document<any>{
 
     email: string;
 
+    username: String;
+
     passwordHash: string;
 
     lastName?: string;

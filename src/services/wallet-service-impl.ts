@@ -38,6 +38,7 @@ class WalletServiceImpl implements WalletService{
         
         const transfer = await TransferRequestRepo.createWalletTransferRequest(<WalletTransferRequest>{
             sourceWalletId: ownerWalletId,
+            currency: ownerWallet.currency.toString(),
             destinationWalletId,
             amount: amount,
         });
@@ -45,6 +46,7 @@ class WalletServiceImpl implements WalletService{
         const transferRequest = new WalletTransferMoneyMessage({
             sourceWalletId: ownerWalletId,
             destinationWalletId,
+            currency: ownerWallet.currency.toString(),
             amount: amount,
             requestId: transfer.requestId
         });

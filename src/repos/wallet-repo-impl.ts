@@ -5,8 +5,11 @@ import { Model } from "mongoose";
 
 class WalletRepoImpl implements WalletRepo {
     
-    getUserWallet(userId: string, currency: any): Promise<Wallet> {
-        throw new Error("Method not implemented.");
+    async getUserWallet(userId: string, currency: any): Promise<Wallet> {
+        const wallet = await WalletModel.findOne({owner: userId, currency});
+        console.log("USER_WALLET:");
+        console.log(wallet);
+        return wallet;
     }
 
     async deleteWalletByUser(user: User): Promise<void> {

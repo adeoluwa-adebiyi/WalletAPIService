@@ -1,0 +1,1 @@
+{"version":3,"file":"walletTransfer.js","sourceRoot":"","sources":["../../../../src/db/schemas/walletTransfer.ts"],"names":[],"mappings":";;AAAA,uCAAkC;AAElC,gDAAgD;AAEhD,kBAAe,IAAI,iBAAM,CAAC;IACtB,cAAc,EAAE;QACZ,IAAI,EAAE,MAAM;QACZ,QAAQ,EAAE,CAAC,IAAI,EAAE,gCAAgC,CAAC;KACrD;IACD,mBAAmB,EAAC;QAChB,IAAI,EAAG,MAAM;QACb,QAAQ,EAAE,CAAC,IAAI,EAAE,qCAAqC,CAAC;KAC1D;CACJ,CAAC,CAAC"}

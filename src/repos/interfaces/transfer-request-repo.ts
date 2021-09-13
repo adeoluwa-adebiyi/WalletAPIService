@@ -5,6 +5,7 @@ import { WalletTransferRequest } from "../../services/interfaces/wallet-service"
 
 
 export class TransferDocument extends Document<WalletTransferMoneyMessageParams> implements WalletTransferMoneyMessageParams{
+    currency: string;
     sourceWalletId: string;
     destinationWalletId: string;
     amount: number;
