@@ -5,6 +5,10 @@ import { BankPayoutMessage } from "../../processors/messages/bank-payout-msg";
 import { WALLET_TRX_EVENTS_TOPIC } from "../../topics";
 
 const bankTransferSchema = new Schema({
+    sourceWalletId: {
+        type: String,
+        required: [true, "sourceWalletId cannot be empty"]
+    },
     bankId: {
         type: String,
         required: [true, "nuban cannot be empty"]
@@ -25,6 +29,8 @@ bankTransferSchema.post<any>("save", async(doc: any, next)=>{
         bankId: doc.bankId,
         amount: doc.amount,
         destinationAccount: doc.destinationAccount,
+        country: doc.country,
+        sourceWalletId: doc.sourceWalletId,
         description: doc.description,
         currency: doc.currency
     }));

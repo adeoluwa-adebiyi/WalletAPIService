@@ -5,7 +5,9 @@ export interface BankPayoutParams {
     status?: String;
     bankId: String;
     swiftCode?: String;
+    country?: String;
     amount: number;
+    sourceWalletId: String;
     destinationAccount: String;
     description: String;
     currency: String;
@@ -25,6 +27,8 @@ export class BankPayoutMessage implements Message, BankPayoutParams {
     swiftCode?: String;
     amount: number;
     destinationAccount: String;
+    sourceWalletId: String;
+    country: String;
     description: String;
     currency: String;
 
@@ -37,6 +41,8 @@ export class BankPayoutMessage implements Message, BankPayoutParams {
         this.swiftCode = params?.swiftCode;
         this.amount = params.amount;
         this.destinationAccount = params?.destinationAccount;
+        this.sourceWalletId = params?.sourceWalletId;
+        this.country = params?.country;
         this.description = params?.description;
     }
 
@@ -61,7 +67,9 @@ export class BankPayoutMessage implements Message, BankPayoutParams {
                 bankId: this?.bankId,
                 swiftCode: this?.swiftCode,
                 destinationAccount: this?.destinationAccount,
-                description: this?.description
+                description: this?.description,
+                sourceWalletId: this?.sourceWalletId,
+                country: this?.country
             }
         })
     }
@@ -76,8 +84,10 @@ export class BankPayoutMessage implements Message, BankPayoutParams {
         this.swiftCode = data?.swiftCode;
         this.amount = data.amount;
         this.destinationAccount = data?.destinationAccount;
+        this.sourceWalletId = data?.sourceWalletId;
         this.description = data?.description;
         this.currency = data.currency;
+        this.country = data.country;
         return this;
     }
 
