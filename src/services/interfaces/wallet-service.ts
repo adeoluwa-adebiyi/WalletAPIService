@@ -1,16 +1,16 @@
 import { User } from "../../db/models/user";
 import { Wallet } from "../../db/models/wallet";
+import { BankPayoutParams } from "../../processors/messages/bank-payout-msg";
 
 export interface WalletTransferReceiver{
     walletUser: string;
 }
 
-export interface BankAccountReceiver {
-    accountNo: string;
-    bankRef: string;
+export interface BankAccountReceiver extends BankPayoutParams{
+
 }
 
-export type TransferRequest = WalletTransferRequest | BankTransferRequest;
+export type TransferRequest = WalletTransferRequest | BankPayoutParams;
 
 export interface WalletTransferRequest{
     sourceWalletId: string;
@@ -20,13 +20,13 @@ export interface WalletTransferRequest{
     requestId?: String;
 }
 
-export interface BankTransferRequest{
-    sourceWalletId: string;
-    accountNumber: string;
-    bankNuban: string;
-    description: string;
-    amount: number;
-}
+// export interface BankTransferP{
+//     sourceWalletId: string;
+//     accountNumber: string;
+//     bankNuban: string;
+//     description: string;
+//     amount: number;
+// }
 
 export interface CardDetails{
     cardNo: String;
@@ -46,6 +46,7 @@ export interface WalletService{
     notifyOnWalletCreation(walletId: String, userId: String, currency: String): Promise<void>;
     transferMoney(walletId: string, amount: number, receiver: MoneyReceiver);
     transferToWallet(ownerWalletId: string, userId: string,amount: number):Promise<TransferRequest>;
+    transferToBank(params: BankPayoutParams): Promise<TransferRequest>;
     // debitWallet(walletId: number, amount: number): Promise<number>;
     obtainWalletBalance(walletId:number): Promise<number>;
     getWallet(user: User, currency: String): Promise<Wallet>;

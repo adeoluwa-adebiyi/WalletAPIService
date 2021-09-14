@@ -1,6 +1,6 @@
 import wallet, { Wallet } from "../db/models/wallet";
 import { User } from "../db/models/user";
-import { CardDetails, MoneyReceiver, TransferRequest, WalletService, WalletTransferReceiver, WalletTransferRequest } from "./interfaces/wallet-service";
+import { BankAccountReceiver, CardDetails, MoneyReceiver, TransferRequest, WalletService, WalletTransferReceiver, WalletTransferRequest } from "./interfaces/wallet-service";
 import UserRepositoryImpl from "../repos/user-repo-impl";
 import WalletRepositoryImpl from "../repos/wallet-repo-impl"
 import { UserRepository } from "../repos/interfaces/user-repo";
@@ -14,17 +14,33 @@ import { sendMessage } from "../helpers/messaging";
 import { KafkaService } from "../kafka";
 import { WalletTransferMoneyMessage } from "../processors/messages/wallet-transfer-money-message";
 import  TransferRequestRepo  from "../repos/transfer-request-repo-impl";
+import { BankPayoutParams } from "../processors/messages/bank-payout-msg";
+import walletRepoImpl from "../repos/wallet-repo-impl";
+import transferRequestRepoImpl from "../repos/transfer-request-repo-impl";
 
 
 class WalletServiceImpl implements WalletService{
 
+    async transferToBank(params: BankPayoutParams): Promise<TransferRequest> {
+        return await transferRequestRepoImpl.createBankPayout(params);
+    }
+
     async transferMoney(walletId: string, amount: number, receiver: MoneyReceiver): Promise<TransferRequest> {
         if(receiver.hasOwnProperty("walletUser")){
             try{
-                const request:TransferRequest = await this.transferToWallet(walletId, (<WalletTransferReceiver>receiver).walletUser, amount);
+                const request = await this.transferToWallet(walletId, (<WalletTransferReceiver>receiver).walletUser, amount);
                 return request;
             }catch(e){
-                throw Error("Wallet transfer request failed")
+                throw Error("Wallet transfer request failed");
+            }
+        }
+
+        if(receiver.hasOwnProperty("destinationAccount")){
+            try{
+                return await this.transferToBank(receiver as BankAccountReceiver);
+            }catch(e){
+                console.log(e);
+                throw Error("Bank transfer request failed");
             }
         }
     }

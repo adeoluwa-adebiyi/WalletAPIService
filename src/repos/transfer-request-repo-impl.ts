@@ -1,11 +1,14 @@
-import { Document } from "mongoose";
-import  Transfer from "../db/models/transfers";
+import bankTransfer from "../db/models/bankTransfer";
 import walletTransfer from "../db/models/walletTransfer";
-import { WalletTransferMoneyMessageParams } from "../processors/messages/wallet-transfer-money-message";
+import { BankPayoutParams } from "../processors/messages/bank-payout-msg";
 import { WalletTransferRequest } from "../services/interfaces/wallet-service";
 import { ITransferRequestRepo, TransferDocument } from "./interfaces/transfer-request-repo";
 
 export class TransferRequestRepo implements ITransferRequestRepo{
+
+    async createBankPayout(request: BankPayoutParams): Promise<any> {
+        return await new bankTransfer(request).save();
+    }
 
     async createWalletTransferRequest(request: WalletTransferRequest): Promise<any> {
         return await new walletTransfer(request).save();
