@@ -59,20 +59,24 @@ export const transferToBank = async (req:any, res:any) => {
             amount: Joi.number().required(),
             destinationAccount: Joi.string().required(),
             description: Joi.string().optional(),
-            currency: Joi.string().required()
+            currency: Joi.string().required(),
+            country: Joi.string().required(),
+            sourceWalletId: Joi.string().required()
         });
         const validated = schema.validate(req.body);
         const {error, value} = validated;
         if(error){
             throw error;
         }
-        const { bankId, amount, destinationAccount, description, currency } = value;
+        const { bankId, amount, destinationAccount, description, currency, sourceWalletId, country } = value;
         const wallet = await walletServiceImpl.getWallet(req.user, currency);
         const request = await walletServiceImpl.transferMoney(wallet.id.toString(), amount, <BankPayoutParams>{
             destinationAccount,
             description,
             bankId,
             currency,
+            country,
+            sourceWalletId,
             amount
         });
         res.json({

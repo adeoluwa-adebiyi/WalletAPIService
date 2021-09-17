@@ -9,11 +9,17 @@ const bankTransferSchema = new Schema({
         type: String,
         required: [true, "sourceWalletId cannot be empty"]
     },
+    acctName: {
+        type: String,
+    },
     bankId: {
         type: String,
         required: [true, "nuban cannot be empty"]
     },
-
+    country: {
+        type: String,
+        required: [true, "country cannot be empty"]
+    },
     destinationAccount:{
         type:  String,
         required: [true, "bankAccount cannot be empty"]
@@ -24,6 +30,8 @@ const bankTransferSchema = new Schema({
 });
 
 bankTransferSchema.post<any>("save", async(doc: any, next)=>{
+    console.log("SAVED:");
+    console.log(doc.toJSON());
     await sendMessage(await eventBus, WALLET_TRX_EVENTS_TOPIC, new BankPayoutMessage({
         requestId: doc.requestId,
         bankId: doc.bankId,
@@ -32,7 +40,8 @@ bankTransferSchema.post<any>("save", async(doc: any, next)=>{
         country: doc.country,
         sourceWalletId: doc.sourceWalletId,
         description: doc.description,
-        currency: doc.currency
+        currency: doc.currency,
+        acctName: doc.acctName
     }));
     doc && next();
 });
