@@ -4,6 +4,11 @@ import { WalletRepo } from "./interfaces/wallet-repo";
 import { Model } from "mongoose";
 
 class WalletRepoImpl implements WalletRepo {
+
+    async getUserWallets(userId: string): Promise<Wallet[]> {
+        const wallets = await WalletModel.find({owner: userId});
+        return wallets;
+    }
     
     async getUserWallet(userId: string, currency: any): Promise<Wallet> {
         const wallet = await WalletModel.findOne({owner: userId, currency});

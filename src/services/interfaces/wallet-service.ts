@@ -50,5 +50,6 @@ export interface WalletService{
     // debitWallet(walletId: number, amount: number): Promise<number>;
     obtainWalletBalance(walletId:number): Promise<number>;
     getWallet(user: User, currency: String): Promise<Wallet>;
+    getUserWallets(userId: string): Promise<Array<Wallet>>;
 
 }

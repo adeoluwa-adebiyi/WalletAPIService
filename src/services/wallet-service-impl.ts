@@ -21,6 +21,10 @@ import transferRequestRepoImpl from "../repos/transfer-request-repo-impl";
 
 class WalletServiceImpl implements WalletService{
 
+    async getUserWallets(userId: string): Promise<Wallet[]> {
+        return this.walletRepo.getUserWallets(userId);
+    }
+
     async transferToBank(params: BankPayoutParams): Promise<TransferRequest> {
         return await transferRequestRepoImpl.createBankPayout(params);
     }

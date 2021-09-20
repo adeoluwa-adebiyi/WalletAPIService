@@ -19,15 +19,10 @@ app.use(express.json());
 
 app.use(cookieParser());
 
-// app.use((req,res, next)=>{
-//     console.log("REQ:");
-//     console.log(req);
-//     next();
-// });
-
 app.use("/", BaseRoutes.homeRoutes);
 app.use("/wallet", BaseRoutes.walletRoutes);
 app.use("/transfer", BaseRoutes.transferRoutes);
+app.use("/wallets", BaseRoutes.walletsRoutes);
 
 app.use(helmet());
 
