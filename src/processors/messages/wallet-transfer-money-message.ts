@@ -18,6 +18,7 @@ export class WalletTransferMoneyMessage implements Message, WalletTransferMoneyM
     amount: number;
     requestId: string;
     currency: string;
+    key: String;
 
     constructor(params?: WalletTransferMoneyMessageParams) {
         this.sourceWalletId = params?.sourceWalletId;
@@ -31,8 +32,12 @@ export class WalletTransferMoneyMessage implements Message, WalletTransferMoneyM
         return this.version;
     }
 
-    getKey(): string {
-        throw new Error("Method not implemented.");
+    setKey(key: String){
+       this.key = key; 
+    }
+
+    getKey(): String {
+        return this.key;
     }
 
     serialize(): string {

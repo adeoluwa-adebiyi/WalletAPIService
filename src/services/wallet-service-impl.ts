@@ -70,6 +70,7 @@ class WalletServiceImpl implements WalletService{
             amount: amount,
             requestId: transfer.requestId
         });
+        transferRequest.setKey(userId);
         await sendMessage((await eventBus), WALLET_TRX_EVENTS_TOPIC, transferRequest);
         return transferRequest;
     }

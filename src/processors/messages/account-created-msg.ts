@@ -22,12 +22,16 @@ export class WalletCreatedMessage implements Message{
         this.userId = params?.userId;
         this.currency = params?.currency;
     }
+    key: String;
+    setKey(key: String) {
+       this.key = key;
+    }
 
     getVersion(): string {
         throw new Error("Method not implemented.");
     }
-    getKey(): string {
-        throw new Error("Method not implemented.");
+    getKey(): String {
+        return  this.key;
     }
     serialize(): string {
         return JSON.stringify({

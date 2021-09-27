@@ -8,9 +8,13 @@ export interface Message{
 
     data: any;
 
+    key: String;
+
     getVersion(): string;
 
-    getKey(): string;
+    getKey(): String;
+
+    setKey(key: String): void;
 
     serialize(): string;
 
