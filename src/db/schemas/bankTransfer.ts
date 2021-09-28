@@ -3,6 +3,8 @@ import eventBus from "../../bus/event-bus";
 import { sendMessage } from "../../helpers/messaging";
 import { BankPayoutMessage } from "../../processors/messages/bank-payout-msg";
 import { WALLET_TRX_EVENTS_TOPIC } from "../../topics";
+import walletRepoImpl from "../../repos/wallet-repo-impl";
+import { createMessage } from "../../utils";
 
 const bankTransferSchema = new Schema({
     sourceWalletId: {
@@ -30,9 +32,8 @@ const bankTransferSchema = new Schema({
 });
 
 bankTransferSchema.post<any>("save", async(doc: any, next)=>{
-    console.log("SAVED:");
-    console.log(doc.toJSON());
-    await sendMessage(await eventBus, WALLET_TRX_EVENTS_TOPIC, new BankPayoutMessage({
+    const wallet = await walletRepoImpl.getWalletById(doc.sourceWalletId);
+    const bankTrx = createMessage<BankPayoutMessage,String>(BankPayoutMessage,{
         requestId: doc.requestId,
         bankId: doc.bankId,
         amount: doc.amount,
@@ -42,7 +43,8 @@ bankTransferSchema.post<any>("save", async(doc: any, next)=>{
         description: doc.description,
         currency: doc.currency,
         acctName: doc.acctName
-    }));
+    }, doc.userId);
+    await sendMessage(await eventBus, WALLET_TRX_EVENTS_TOPIC, bankTrx);
     doc && next();
 });
 

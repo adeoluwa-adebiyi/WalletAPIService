@@ -14,7 +14,7 @@ export interface Message{
 
     getKey(): String;
 
-    setKey(key: String): void;
+    setKey(key: any): void;
 
     serialize(): string;
 

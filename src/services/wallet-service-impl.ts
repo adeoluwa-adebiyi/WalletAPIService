@@ -17,6 +17,7 @@ import  TransferRequestRepo  from "../repos/transfer-request-repo-impl";
 import { BankPayoutParams } from "../processors/messages/bank-payout-msg";
 import walletRepoImpl from "../repos/wallet-repo-impl";
 import transferRequestRepoImpl from "../repos/transfer-request-repo-impl";
+import { createMessage } from "../utils";
 
 
 class WalletServiceImpl implements WalletService{
@@ -63,24 +64,25 @@ class WalletServiceImpl implements WalletService{
             amount: amount,
         });
 
-        const transferRequest = new WalletTransferMoneyMessage({
+        const transferRequest = createMessage<WalletTransferMoneyMessage, String>(WalletTransferMoneyMessage,{
             sourceWalletId: ownerWalletId,
             destinationWalletId,
             currency: ownerWallet.currency.toString(),
             amount: amount,
             requestId: transfer.requestId
-        });
-        transferRequest.setKey(userId);
+        }, userId);
+
         await sendMessage((await eventBus), WALLET_TRX_EVENTS_TOPIC, transferRequest);
         return transferRequest;
     }
 
     async notifyOnWalletCreation(walletId: String, userId: String, currency: String): Promise<void> {
-        (await eventBus).submitRequest(new WalletCreatedMessage({
+        const walletCreatedNotification = createMessage<WalletCreatedMessage, String>(WalletCreatedMessage, {
             walletId,
             userId,
             currency
-        }),WALLET_EVENTS_TOPIC);
+        }, userId);
+        await sendMessage((await eventBus), WALLET_EVENTS_TOPIC, walletCreatedNotification);
     }
 
     private get walletRepo(): WalletRepo{

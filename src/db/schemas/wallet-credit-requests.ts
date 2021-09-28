@@ -1,7 +1,9 @@
 import { v4 as uuidv4 } from "uuid";
 import { Schema, SchemaTypes } from "mongoose";
+import key from "./key";
 
 const walletCreditRequestSchema = new Schema({
+    ...key,
     requestId: {
         type: String,
         unique:true,
