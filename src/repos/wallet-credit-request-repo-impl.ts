@@ -4,12 +4,13 @@ import { WalletCreditRequestRepo } from "./interfaces/wallet-credit-requests-rep
 
 class WalletCreditRequestRepoImpl implements WalletCreditRequestRepo{
     
-    async creditWallet(walletId: String, amount: Number, cardDeets: CardDetails, currency: String) {
+    async creditWallet(walletId: String, amount: Number, cardDeets: CardDetails, currency: String, key: any) {
         return await WalletCreditRequest.create({
             walletId,
             amount,
             currency,
-            cardData: cardDeets
+            cardData: cardDeets,
+            key
         });
     }
 

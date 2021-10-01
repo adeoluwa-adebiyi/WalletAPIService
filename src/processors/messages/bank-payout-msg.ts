@@ -12,6 +12,7 @@ export interface BankPayoutParams {
     destinationAccount: String;
     description: String;
     currency: String;
+    key?: String;
 }
 
 export const BANK_PAYOUT_MSG = "bank-payout";
@@ -81,7 +82,8 @@ export class BankPayoutMessage implements Message, BankPayoutParams {
                 description: this?.description,
                 sourceWalletId: this?.sourceWalletId,
                 country: this?.country
-            }
+            },
+            key: this.key
         });
     }
 
@@ -100,6 +102,7 @@ export class BankPayoutMessage implements Message, BankPayoutParams {
         this.description = data?.description;
         this.currency = data.currency;
         this.country = data.country;
+        this.key = obj.key;
         return this;
     }
 

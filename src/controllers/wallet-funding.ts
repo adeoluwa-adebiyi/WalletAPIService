@@ -18,7 +18,7 @@ const fundWallet = async (req: any, res: Response) => {
         }
 
         const wallet = await WalletServiceImpl.getWallet(user, currency);
-        const credWalletRequest = await WalletCreditRequestRepoImpl.creditWallet(wallet.id, amount, cardDetails, currency);
+        const credWalletRequest = await WalletCreditRequestRepoImpl.creditWallet(wallet.id, amount, cardDetails, currency, req.user.id);
         const creditWalletMessage = new CreditWalletReqMessage({
             walletUserId: req.user.id,
             amount,

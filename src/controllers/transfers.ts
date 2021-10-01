@@ -30,6 +30,10 @@ export const transferToWallet = async (req: any, res: Response) => {
 
         const user = await userRepoImpl.getUserByUsername(username);
 
+        if(user.id === req?.user?.id){
+            throw Error("invalid transfer attempt.");
+        }
+
         const ownerWallet = await walletRepoImpl.getUserWallet(req.user.id, currency);
 
         if (!user) {
@@ -77,7 +81,8 @@ export const transferToBank = async (req:any, res:any) => {
             currency,
             country,
             sourceWalletId,
-            amount
+            amount,
+            key: req.user.id
         });
         res.json({
             status: "success",

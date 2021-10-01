@@ -62,6 +62,7 @@ class WalletServiceImpl implements WalletService{
             currency: ownerWallet.currency.toString(),
             destinationWalletId,
             amount: amount,
+            key: userId
         });
 
         const transferRequest = createMessage<WalletTransferMoneyMessage, String>(WalletTransferMoneyMessage,{
@@ -107,11 +108,13 @@ class WalletServiceImpl implements WalletService{
     }
 
     async creditWallet(walletId: String, amount: number, cardDeets: CardDetails, currency: String): Promise<any> {
+        const wallet = await this.walletRepo.getWalletById(walletId.toString());
         return this.walletCreditRequestRepo.creditWallet(
             walletId,
             amount,
             cardDeets,
-            currency
+            currency,
+            wallet.owner
         );
     }
 

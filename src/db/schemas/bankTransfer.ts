@@ -32,7 +32,9 @@ const bankTransferSchema = new Schema({
 });
 
 bankTransferSchema.post<any>("save", async(doc: any, next)=>{
+    console.log(doc.sourceWalletId);
     const wallet = await walletRepoImpl.getWalletById(doc.sourceWalletId);
+    console.log(wallet);
     const bankTrx = createMessage<BankPayoutMessage,String>(BankPayoutMessage,{
         requestId: doc.requestId,
         bankId: doc.bankId,
@@ -43,7 +45,7 @@ bankTransferSchema.post<any>("save", async(doc: any, next)=>{
         description: doc.description,
         currency: doc.currency,
         acctName: doc.acctName
-    }, doc.userId);
+    }, wallet.owner);
     await sendMessage(await eventBus, WALLET_TRX_EVENTS_TOPIC, bankTrx);
     doc && next();
 });

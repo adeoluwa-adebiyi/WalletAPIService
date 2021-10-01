@@ -18,6 +18,7 @@ export interface WalletTransferRequest{
     amount: number;
     currency?:String;
     requestId?: String;
+    key?: String;
 }
 
 // export interface BankTransferP{
