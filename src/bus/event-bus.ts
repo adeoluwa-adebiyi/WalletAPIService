@@ -11,11 +11,11 @@ import { KafkaService } from "../kafka";
 import { Message } from "../processors/messages/interface/message";
 
 export interface MessageHandler {
-    ({ message: any }): Promise<void>;
+    ({ message }:{message: any}): Promise<void>;
 }
 
 export interface MessageBatchHandler {
-    ({ messages: Array, commitMessageBatch: Function }): Promise<void>;
+    ({ messages, commitMessageBatch }: { messages: Array<any>, commitMessageBatch: Function }): Promise<void>;
 }
 
 export interface KafkaMessageMetaData extends KafkaMessage {
